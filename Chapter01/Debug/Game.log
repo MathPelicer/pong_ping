@@ -1,0 +1,2 @@
+﻿  Game.cpp
+C:\Users\unifmpelicer\Downloads\Lab 1\Chapter01\Game.cpp(258,23): error C2040: 'pchar': 'SDL_TextEditingEvent' difere em níveis de indireção de 'const char *'
