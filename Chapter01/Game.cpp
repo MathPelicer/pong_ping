@@ -7,6 +7,7 @@
 // ----------------------------------------------------------------
 
 #include "Game.h"
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -67,18 +68,32 @@ bool Game::Initialize()
 
 	mPaddlePos.x = 10.0f;//posição inicial da raquete eixo x
 	mPaddlePos.y = 768.0f/2.0f;//posição inicial da raquee eixo y
-	mBallPos.x = 1024.0f/2.0f;//posição da bola eixo x
-	mBallPos.y = 768.0f/2.0f;//posição da bola eixo y
-	Ball0.pos_x = rand() % 512 + 512;
-	Ball0.pos_y = rand() % 384 + 384;
-	Ball0.speed_x = -50.0f;
-	Ball0.speed_y = 125.0f;
-	//int randomXPos = rand() % 512 + 512;
-	//int randomYPos = rand() % 384 + 384;
-	mBallVel.x = -200.0f;//velocidade de movimentação da bola no eixo x
-	mBallVel.y = 500.0f;//velocidade de movimentação da bola no eixo y
+	//mBallPos.x = 1024.0f/2.0f;//posição da bola eixo x
+	//mBallPos.y = 768.0f/2.0f;//posição da bola eixo y
+	//mBallVel.x = -200.0f;//velocidade de movimentação da bola no eixo x
+	//mBallVel.y = 500.0f;//velocidade de movimentação da bola no eixo y
+	
+	//Define a vida do jogador
+	health = 3;
 
-	//printf("X: %d / Y: %d", randomXPos, randomYPos);
+	//Inicializa as bolas
+
+	for (int i = 0; i < 10; i++) {
+		//Define as posições iniciais das bolas
+		ball_array[i].pos_x = rand() % 512 + 512;
+		ball_array[i].pos_y = rand() % 384 + 384;
+		//Define a velocidade inicial da bola
+		ball_array[i].speed_x = ((rand() % 100) + ((i + 1) * 100)) * ( - 1);
+		ball_array[i].speed_y = rand() % 500;
+		//Define a pontuação da bola
+		ball_array[i].value = i + 1;
+		//Define a pontuação necessária para ativar a bola
+		ball_array[i].requirement = (i * 5) * 1.4;
+		//Define as cores da bola
+		ball_array[i].red = rand() % 255;
+		ball_array[i].blue = rand() % 255;
+		ball_array[i].green = rand() % 255;
+	}
 
 	return true;
 }
@@ -161,6 +176,10 @@ void Game::UpdateGame()
 			mPaddlePos.y = 768.0f - paddleH/2.0f - thickness;
 		}
 	}
+
+	// CÓDIGO DO PROFESSOR
+
+	/*
 	
 	// atualiza a posição da bola com base na sua velocidade
 	mBallPos.x += mBallVel.x * deltaTime;
@@ -213,55 +232,134 @@ void Game::UpdateGame()
 		mBallVel.y *= -1;
 	}
 
-	Ball0.pos_x += Ball0.speed_x * deltaTime;
-	Ball0.pos_y += Ball0.speed_y * deltaTime;
+	*/
 
-	// atualiza a posição da bola se ela colidiu com a raquete
-	diff = mPaddlePos.y - Ball0.pos_y;
-	//pegue o valor absoluto de diferença entre o eixo y da bolinha e da raquete
-	//isso é necessário para os casos em que no próximo frame a bolinha ainda não esteja tão distante da raquete
-	//verifica se a bola está na area da raquete e na mesma posição no eixo x
-	diff = (diff > 0.0f) ? diff : -diff;
-	if (
-		// A diferença no eixo y y-difference is small enough
-		diff <= paddleH / 2.0f &&
-		// Estamos na posicao x correta
-		Ball0.pos_x <= 25.0f && Ball0.pos_x >= 20.0f &&
-		// A bolinha está se movendo para a esquerda
-		Ball0.speed_x < 0.0f)
-	{
-		Ball0.speed_x *= -1.0f;
+	/*========================================*/
+	/*               Meu Código               */
+	/*========================================*/
+
+	//Verifica colisão das bolas
+
+	for (int i = 0; i < 10; i++) {
+
+		if (ball_array[i].requirement <= score) {
+			ball_array[i].active = true;
+		}
+
+		//printf("Procurando a bola %d\n", i);
+
+		//std::cout << "Estado da bola " << i << " = " << ball_array[i].active << std::endl;
+
+		if (ball_array[i].active) {
+
+			//("Achei uma bola ativa \n\n");
+
+			//printf("Busca a velocidade da bola: \n");
+			//printf("Vel. eixo X = %f \nVel. eixo Y = %f\n\n", ball_array[i].speed_x, ball_array[i].speed_y);
+			
+			//printf("Busca a posicao da bola: \n");
+			//printf("Pos. eixo X = %f \nPos. eixo Y = %f\n\n", ball_array[i].pos_x, ball_array[i].pos_y);
+
+			ball_array[i].pos_x += ball_array[i].speed_x * deltaTime;
+			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
+
+			//printf("Verifica se os valores foram atualizados \n\n");
+
+			//printf("Busca a velocidade da bola: \n");
+			//printf("Vel. eixo X = %f \nVel. eixo Y = %f\n\n", ball_array[i].speed_x, ball_array[i].speed_y);
+
+			//printf("Busca a posicao da bola: \n");
+			//printf("Pos. eixo X = %f \nPos. eixo Y = %f\n\n", ball_array[i].pos_x, ball_array[i].pos_y);
+
+			// atualiza a posição da bola se ela colidiu com a raquete
+			float diff = mPaddlePos.y - ball_array[i].pos_y;
+			//pegue o valor absoluto de diferença entre o eixo y da bolinha e da raquete
+			//isso é necessário para os casos em que no próximo frame a bolinha ainda não esteja tão distante da raquete
+			//verifica se a bola está na area da raquete e na mesma posição no eixo x
+			diff = (diff > 0.0f) ? diff : -diff;
+			if (
+				// A diferença no eixo y y-difference is small enough
+				diff <= paddleH / 2.0f &&
+				// Estamos na posicao x correta
+				ball_array[i].pos_x <= 25.0f && ball_array[i].pos_x >= 20.0f &&
+				// A bolinha está se movendo para a esquerda
+				ball_array[i].speed_x < 0.0f)
+			{
+				ball_array[i].speed_x *= -1.0f;
+			}
+			//Verifica se a bola saiu da tela (no lado esquerdo, onde é permitido)
+			//Se sim, encerra o jogo
+			// ====================
+			// FAZER ALTERAÇÃO AQUI
+			// ====================
+			else if (ball_array[i].pos_x <= 0.0f)
+			{
+				if (health == 1) {
+					printf("Your score was %d\n", score);
+					mIsRunning = false;
+				
+				}
+				else {
+					printf("Health: %d\n", health);
+					if (health == 5) {
+						health = 4;
+					}
+					else if (health == 4) {
+						health = 3;
+					}
+					else if (health == 3) {
+						health = 2;
+					}
+					else if (health == 2) {
+						health = 1;
+					}
+					else if (health == 1) {
+						health = 0;
+					}
+					ball_array[i].pos_x = rand() % 256 + 768;
+					ball_array[i].pos_y = rand() % 192 + 576;
+					ball_array[i].speed_x *= 0.75;
+					ball_array[i].speed_y *= 0.75;
+				}
+				
+			}
+			// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
+			// 
+			else if (ball_array[i].pos_x >= (1024.0f - thickness) && ball_array[i].speed_x > 0.0f)
+			{
+				float speed_increment = (rand() % 21 - 10) / 100;
+
+				ball_array[i].speed_x *= -1.0f + speed_increment;
+
+				printf("+%d\n", ball_array[i].value);
+
+				score += ball_array[i].value;
+
+				printf("Your score is %d\n", score);
+
+			}
+			// Atualize (negative) a posição da bola se ela colidir com a parede de cima
+			// 
+			if (ball_array[i].pos_y <= thickness && ball_array[i].speed_y < 0.0f)
+			{
+				ball_array[i].speed_y *= -1;
+			}
+			// Atualize (negative) a posição da bola se ela colidiu com a parede de baixo
+			// Did the ball collide with the bottom wall?
+			else if (ball_array[i].pos_y >= (768 - thickness) && ball_array[i].speed_y > 0.0f)
+			{
+				ball_array[i].speed_y *= -1;
+			}
+
+		}
+
+		//printf("\n");
+
 	}
 
-	//Verifica se a bola saiu da tela (no lado esquerdo, onde é permitido)
-	//Se sim, encerra o jogo
-	// 
-	else if (Ball0.pos_x <= 0.0f)
-	{
-		mIsRunning = false;
-	}
+	//printf("=======================================\n\n");
 
-	// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
-	// 
-	else if (Ball0.pos_x >= (1024.0f - thickness) && Ball0.speed_x > 0.0f)
-	{
-		Ball0.speed_x *= -1.0f;
-	}
-
-	// Atualize (negative) a posição da bola se ela colidir com a parede de cima
-	// 
-	if (Ball0.pos_y <= thickness && Ball0.speed_y < 0.0f)
-	{
-		Ball0.speed_y *= -1;
-	}
-
-	// Atualize (negative) a posição da bola se ela colidiu com a parede de baixo
-	// Did the ball collide with the bottom wall?
-	else if (Ball0.pos_y >= (768 - thickness) &&
-		Ball0.speed_y > 0.0f)
-	{
-		Ball0.speed_y *= -1;
-	}
+	//========================================================================================================================//
 
 }
 
@@ -293,7 +391,7 @@ void Game::GenerateOutput()
 	};
 	SDL_RenderFillRect(mRenderer, &wall);//finalmente, desenhamos um retangulo no topo
 	
-	SDL_SetRenderDrawColor(mRenderer, 0, 255, 255, 255);
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
 
 	//desenhamos as outras paredes apenas mudando as coordenadas de wall
 
@@ -326,7 +424,9 @@ void Game::GenerateOutput()
 	};
 	SDL_RenderFillRect(mRenderer, &paddle);
 	
+	// Código do professor para desenhar a bola
 
+	/*
 	//desenhando a bola - usando mBallPos que é uma struc de coordenadas definida como membro em Game.h
 	
 	//mudar a cor do renderizador para a bola
@@ -341,20 +441,122 @@ void Game::GenerateOutput()
 	SDL_RenderFillRect(mRenderer, &ball);
 
 	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);	
+	*/
 
-	//mudar a cor do renderizador para a MyBola
-	SDL_SetRenderDrawColor(mRenderer, 255, 0, 255, 255);
+	for (int i = 0; i < 10; i++) {
 
-	SDL_Rect MyBall{
-		static_cast<int>(Ball0.pos_x - thickness / 2),
-		static_cast<int>(Ball0.pos_y - thickness / 2),
-		thickness,
-		thickness
-	};
+		if (ball_array[i].active) {
+			
 
-	SDL_RenderFillRect(mRenderer, &MyBall);
+			//mudar a cor do renderizador para a Ball0
+			SDL_SetRenderDrawColor(mRenderer, ball_array[i].red, ball_array[i].blue, ball_array[i].green, 255);
 
-	SDL_SetRenderDrawColor(mRenderer, 255, 0, 255, 255);
+			SDL_Rect Ball{
+				static_cast<int>(ball_array[i].pos_x - thickness / 2),
+				static_cast<int>(ball_array[i].pos_y - thickness / 2),
+				thickness,
+				thickness
+			};
+
+			SDL_RenderFillRect(mRenderer, &Ball);
+
+		
+
+			SDL_SetRenderDrawColor(mRenderer, ball_array[i].red, ball_array[i].blue, ball_array[i].green, 255);
+		}
+
+		
+
+	}
+
+	// Desenha os pontos de vida
+
+	if (health > 0) {
+
+		//Desenha o primeiro ponto de vida
+		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+
+		SDL_Rect Health1{
+			980,
+			728,
+			thickness,
+			thickness
+		};
+
+		SDL_RenderFillRect(mRenderer, &Health1);
+
+		SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+
+		if (health > 1) {
+			//Desenha o segundo ponto de vida
+			SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+
+			SDL_Rect Health2{
+				980,
+				708,
+				thickness,
+				thickness
+			};
+
+			SDL_RenderFillRect(mRenderer, &Health2);
+
+			SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+
+			if (health > 2) {
+				//Desenha o terceiro ponto de vida
+				SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
+
+				SDL_Rect Health3{
+					980,
+					688,
+					thickness,
+					thickness
+				};
+
+				SDL_RenderFillRect(mRenderer, &Health3);
+
+				SDL_SetRenderDrawColor(mRenderer, 255, 220, 0, 255);
+
+				if (health > 3) {
+					//Desenha o quarto ponto de vida
+					SDL_SetRenderDrawColor(mRenderer, 255, 220, 0, 255);
+
+					SDL_Rect Health4{
+						980,
+						668,
+						thickness,
+						thickness
+					};
+
+					SDL_RenderFillRect(mRenderer, &Health4);
+
+					SDL_SetRenderDrawColor(mRenderer, 255, 220, 0, 255);
+				}
+
+				if (health > 4) {
+					//Desenha o quinto ponto de vida
+					SDL_SetRenderDrawColor(mRenderer, 255, 220, 0, 255);
+
+					SDL_Rect Health5{
+						980,
+						648,
+						thickness,
+						thickness
+					};
+
+					SDL_RenderFillRect(mRenderer, &Health5);
+
+					SDL_SetRenderDrawColor(mRenderer, 255, 220, 0, 255);
+				}
+
+			}
+
+
+		}
+
+
+	}
+
 
 	
 	// Swap front buffer and back buffer

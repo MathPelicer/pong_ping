@@ -26,6 +26,37 @@ struct BallVector2
 	float speed_x;
 	float speed_y;
 
+	bool active = false;
+
+	int requirement;
+
+	int value;
+
+	int red;
+	int blue;
+	int green;
+
+};
+
+struct SpecialBallVector2
+{
+
+	float pos_x;
+	float pos_y;
+
+	float speed_x;
+	float speed_y;
+
+	bool active = false;
+
+	int cooldown = 15;
+
+	int value;
+
+	int red[15] = { 255 , 255 , 255 , 255 , 220 , 140 , 0 , 0 , 0 , 0 , 0 , 100, 175, 255, 255};
+	int blue[15] = { 0 , 85 , 140 , 220 , 255 , 255 , 255 , 255 , 255 , 150 , 0 , 0 , 0 , 0 , 0};
+	int green[15] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 100 , 210 , 255 , 255 , 255, 255, 255 , 150};
+
 };
 
 
@@ -60,6 +91,11 @@ private:
 	int mPaddleDir;
 	// Position of paddle
 	Vector2 mPaddlePos;
+
+	// Player Score
+	int score;
+	// Player Health
+	int health;
 	// Position of ball
 	Vector2 mBallPos;
 	// Velocity of ball
@@ -75,6 +111,7 @@ private:
 	BallVector2 Ball7;
 	BallVector2 Ball8;
 	BallVector2 Ball9;
+	//SpecialBallVector2 Rainball
 
 	BallVector2 ball_array[10] = {Ball0, Ball1, Ball2, Ball3, Ball4, Ball5, Ball6, Ball7, Ball8, Ball9};
 };
