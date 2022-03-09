@@ -33,8 +33,8 @@ struct BallVector2
 	int value;
 
 	int red;
-	int blue;
 	int green;
+	int blue;
 
 };
 
@@ -49,13 +49,15 @@ struct SpecialBallVector2
 
 	bool active = false;
 
-	int cooldown = 15;
+	int cooldown = 250;
 
-	int value;
+	int colour_changer_timer = 30;
 
-	int red[15] = { 255 , 255 , 255 , 255 , 220 , 140 , 0 , 0 , 0 , 0 , 0 , 100, 175, 255, 255};
-	int blue[15] = { 0 , 85 , 140 , 220 , 255 , 255 , 255 , 255 , 255 , 150 , 0 , 0 , 0 , 0 , 0};
-	int green[15] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 100 , 210 , 255 , 255 , 255, 255, 255 , 150};
+	int colour_changer = 0;
+
+	int red = 255;
+	int green = 0;
+	int blue = 0;
 
 };
 
@@ -89,6 +91,9 @@ private:
 	// Pong specific
 	// Direction of paddle
 	int mPaddleDir;
+	// Reverse paddle
+	bool mPaddleReverse;
+	int mPaddleReverseWait;
 	// Position of paddle
 	Vector2 mPaddlePos;
 
@@ -111,7 +116,7 @@ private:
 	BallVector2 Ball7;
 	BallVector2 Ball8;
 	BallVector2 Ball9;
-	//SpecialBallVector2 Rainball
+	SpecialBallVector2 Rainball;
 
 	BallVector2 ball_array[10] = {Ball0, Ball1, Ball2, Ball3, Ball4, Ball5, Ball6, Ball7, Ball8, Ball9};
 };
