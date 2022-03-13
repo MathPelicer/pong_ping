@@ -133,131 +133,92 @@ void Game::ProcessInput()
 	
 	// Update paddle direction based on W/S keys - atualize a dire��o da raquete com base na entrada do jogador
 	// W -> move a raquete para cima, S -> move a raquete para baixo
-	mPaddleDir = 0;
-	mPaddleReverse = false;
+	
+	// Reseta as variáveis do player 1
+	player_1.mPaddleDir = 0;
+	player_1.mPaddleReverse = false;
+
+	// Reseta as variáveis do player 2
+	player_2.mPaddleDir = 0;
+	player_2.mPaddleReverse = false;
+
+	// Verifica qual o input do teclado
+
+	// Input para "subir" o player 1
 	if (state[SDL_SCANCODE_W])
 	{
-		mPaddleDir -= 1;
+		player_1.mPaddleDir -= 1;
 	}
+	// Input para "descer" o player 1
 	if (state[SDL_SCANCODE_S])
 	{
-		mPaddleDir += 1;
+		player_1.mPaddleDir += 1;
 	}
-	if (state[SDL_SCANCODE_SPACE] && mPaddleReverseWait == 0)
+	// Input para reverter a raquete do player 1
+	if (state[SDL_SCANCODE_SPACE] && player_1.mPaddleReverseWait == 0)
 	{
-		mPaddleReverse = true;
+		player_1.mPaddleReverse = true;
 	}
-}
 
-void Game::UpdateGame()
-{
-	// Espere que 16ms tenham passado desde o �ltimo frame - limitando os frames
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
-		;
+	// Inputs player 2
 
-	// Delta time � a diferen�a em ticks do �ltimo frame
-	// (convertido pra segundos) - calcula o delta time para atualiza��o do jogo
-	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-	
-	// "Clamp" (lima/limita) valor m�ximo de delta time
-	if (deltaTime > 0.05f)
+	// Input para "subir" o player 2
+	if (state[SDL_SCANCODE_UP])
 	{
-		deltaTime = 0.05f;
+		player_2.mPaddleDir -= 1;
 	}
-
-	// atualize a contagem de ticks par ao pr�ximo frame
-	mTicksCount = SDL_GetTicks();
-	
-	// atualiza a posi��o da raquete
-	if (mPaddleDir != 0)
+	// Input para "descer" o player 2
+	if (state[SDL_SCANCODE_S])
 	{
-		mPaddlePos.y += mPaddleDir * 300.0f * deltaTime;
-		// verifique que a raquete n�o se move para fora da tela - usamos "thickness", que definimos como a altura dos elementos
-		if (mPaddlePos.y < (paddleH/2.0f + thickness))
-		{
-			mPaddlePos.y = paddleH/2.0f + thickness;
-		}
-		else if (mPaddlePos.y > (768.0f - paddleH/2.0f - thickness))
-		{
-			mPaddlePos.y = 768.0f - paddleH/2.0f - thickness;
-		}
+		player_2.mPaddleDir += 1;
 	}
-
-	if (mPaddleReverse)
+	// Input para reverter a raquete do player 2
+	if (state[SDL_SCANCODE_RETURN2] && player_2.mPaddleReverseWait == 0)
 	{
-		mPaddlePos.y = 768 - mPaddlePos.y;
-		mPaddleReverseWait = 25;
+		player_2.mPaddleReverse = true;
 	}
-	
-	if (mPaddleReverseWait > 0) {
-		mPaddleReverseWait--;
-	}
-
-	// C�DIGO DO PROFESSOR
-
-	/*
-	
-	// atualiza a posi��o da bola com base na sua velocidade
-	mBallPos.x += mBallVel.x * deltaTime;
-	mBallPos.y += mBallVel.y * deltaTime;
-	
-	// atualiza a posi��o da bola se ela colidiu com a raquete
-	float diff = mPaddlePos.y - mBallPos.y;
-	//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
-	//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
-	//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
-	diff = (diff > 0.0f) ? diff : -diff;
-	if (
-		// A diferen�a no eixo y y-difference is small enough
-		diff <= paddleH / 2.0f &&
-		// Estamos na posicao x correta
-		mBallPos.x <= 25.0f && mBallPos.x >= 20.0f &&
-		// A bolinha est� se movendo para a esquerda
-		mBallVel.x < 0.0f)
-	{
-		mBallVel.x *= -1.0f;
-	}
-
-	//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
-	//Se sim, encerra o jogo
-	// 
-	else if (mBallPos.x <= 0.0f)
+	// Fecha o jogo
+	if (state[SDL_SCANCODE_ESCAPE])
 	{
 		mIsRunning = false;
 	}
+}
 
-	// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
-	// 
-	else if (mBallPos.x >= (1024.0f - thickness) && mBallVel.x > 0.0f)
+void Game::RunSingleplayer(float deltaTime)
+{
+	// atualiza a posi��o da raquete
+	if (player_1.mPaddleDir != 0)
 	{
-		mBallVel.x *= -1.0f;
-	}
-	
-	// Atualize (negative) a posi��o da bola se ela colidir com a parede de cima
-	// 
-	if (mBallPos.y <= thickness && mBallVel.y < 0.0f)
-	{
-		mBallVel.y *= -1;
-	}
-
-	// Atualize (negative) a posi��o da bola se ela colidiu com a parede de baixo
-	// Did the ball collide with the bottom wall?
-	else if (mBallPos.y >= (768 - thickness) &&
-		mBallVel.y > 0.0f)
-	{
-		mBallVel.y *= -1;
+		player_1.mPaddlePos.y += player_1.mPaddleDir * 300.0f * deltaTime;
+		// verifique que a raquete n�o se move para fora da tela - usamos "thickness", que definimos como a altura dos elementos
+		if (player_1.mPaddlePos.y < (paddleH / 2.0f + thickness))
+		{
+			player_1.mPaddlePos.y = paddleH / 2.0f + thickness;
+		}
+		else if (player_1.mPaddlePos.y > (768.0f - paddleH / 2.0f - thickness))
+		{
+			player_1.mPaddlePos.y = 768.0f - paddleH / 2.0f - thickness;
+		}
 	}
 
-	*/
+	if (player_1.mPaddleReverse)
+	{
+		player_1.mPaddlePos.y = 768 - player_1.mPaddlePos.y;
+		player_1.mPaddleReverseWait = 25;
+	}
+
+	if (player_1.mPaddleReverseWait > 0) {
+		player_1.mPaddleReverseWait--;
+	}
 
 	/*========================================*/
-	/*               Meu C�digo               */
+	/*             Nosso C�digo               */
 	/*========================================*/
 
 	//Tenta invocar a bola especial
 
 	if (!Rainball.active) {
-		
+
 		int nat20 = rand() % 20 + 1;
 
 		if (nat20 == 20) {
@@ -268,7 +229,7 @@ void Game::UpdateGame()
 				Rainball.pos_y = rand() % 192 + 576;
 				Rainball.speed_x = ((rand() % 150) + 50) * (-1);
 				Rainball.speed_y = rand() % 300;
-				
+
 			}
 		}
 
@@ -303,7 +264,7 @@ void Game::UpdateGame()
 					Rainball.blue--;
 				}
 				//Reseta o temporizador
-				Rainball.colour_changer_timer = 30;
+				Rainball.colour_changer_timer = 15;
 			}
 		}
 	}
@@ -317,12 +278,12 @@ void Game::UpdateGame()
 		}
 
 		if (ball_array[i].active) {
-			
+
 			ball_array[i].pos_x += ball_array[i].speed_x * deltaTime;
 			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
 
 			// atualiza a posi��o da bola se ela colidiu com a raquete
-			float diff = mPaddlePos.y - ball_array[i].pos_y;
+			float diff = player_1.mPaddlePos.y - ball_array[i].pos_y;
 			//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
 			//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
 			//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
@@ -439,20 +400,20 @@ void Game::UpdateGame()
 		// ====================
 		else if (Rainball.pos_x <= 0.0f)
 		{
-			
+
 			Rainball.pos_x = -10;
 			Rainball.pos_y = -10;
 			Rainball.speed_x *= 0;
 			Rainball.speed_y *= 0;
 			Rainball.active = false;
 			Rainball.cooldown = 150;
-			
+
 		}
 		// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
 		// 
 		else if (Rainball.pos_x >= (1024.0f - thickness) && Rainball.speed_x > 0.0f)
 		{
-			
+
 			Rainball.pos_x = -10;
 			Rainball.pos_y = -10;
 			Rainball.speed_x *= 0;
@@ -481,14 +442,39 @@ void Game::UpdateGame()
 		}
 
 	}
+}
 
-		//printf("\n");
+void Game::RunMultiplayer(float deltaTime) 
+{
+	
+}
 
+void Game::UpdateGame()
+{
+	// Espere que 16ms tenham passado desde o �ltimo frame - limitando os frames
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
+		;
 
-	//printf("=======================================\n\n");
+	// Delta time � a diferen�a em ticks do �ltimo frame
+	// (convertido pra segundos) - calcula o delta time para atualiza��o do jogo
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+	
+	// "Clamp" (lima/limita) valor m�ximo de delta time
+	if (deltaTime > 0.05f)
+	{
+		deltaTime = 0.05f;
+	}
 
-	//========================================================================================================================//
-
+	// atualize a contagem de ticks par ao pr�ximo frame
+	mTicksCount = SDL_GetTicks();
+	
+	if (playerCount == 1) {
+		RunSingleplayer(deltaTime);
+	}
+	else if (playerCount == 2){
+		
+	}
+	
 }
 
 //Desenhando a tela do jogo
@@ -551,25 +537,6 @@ void Game::GenerateOutput()
 		static_cast<int>(paddleH)
 	};
 	SDL_RenderFillRect(mRenderer, &paddle);
-	
-	// C�digo do professor para desenhar a bola
-
-	/*
-	//desenhando a bola - usando mBallPos que � uma struc de coordenadas definida como membro em Game.h
-	
-	//mudar a cor do renderizador para a bola
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-	// Draw ball
-	SDL_Rect ball{	
-		static_cast<int>(mBallPos.x - thickness/2),
-		static_cast<int>(mBallPos.y - thickness/2),
-		thickness,
-		thickness
-	};
-	SDL_RenderFillRect(mRenderer, &ball);
-
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);	
-	*/
 
 	for (int i = 0; i < 10; i++) {
 

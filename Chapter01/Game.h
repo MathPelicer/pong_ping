@@ -17,6 +17,19 @@ struct Vector2
 	float y;
 };
 
+struct PlayerPaddle
+{
+	// Direction of paddle
+	int mPaddleDir;
+
+	// Reverse paddle
+	bool mPaddleReverse;
+	int mPaddleReverseWait;
+
+	// Position of paddle
+	Vector2 mPaddlePos;
+};
+
 struct BallVector2
 {
 
@@ -76,6 +89,8 @@ public:
 private:
 	// Helper functions for the game loop
 	void ProcessInput();
+	void RunSingleplayer(float deltaTime);
+	void RunMultiplayer(float deltaTime);
 	void UpdateGame();
 	void GenerateOutput();
 
@@ -87,15 +102,18 @@ private:
 	Uint32 mTicksCount;
 	// Game should continue to run
 	bool mIsRunning;
-	
+	// Player count
+	int playerCount = 1;
+
 	// Pong specific
-	// Direction of paddle
-	int mPaddleDir;
-	// Reverse paddle
-	bool mPaddleReverse;
-	int mPaddleReverseWait;
-	// Position of paddle
-	Vector2 mPaddlePos;
+	// Player 1
+	PlayerPaddle player_1;
+
+	// Player 2
+	PlayerPaddle player_2;
+
+	// Players array
+	PlayerPaddle player_array[2] = {player_1, player_2};
 
 	// Player Score
 	int score;
@@ -106,6 +124,7 @@ private:
 	// Velocity of ball
 	Vector2 mBallVel;
 
+	// Shit tons of balls B****
 	BallVector2 Ball0;
 	BallVector2 Ball1;
 	BallVector2 Ball2;
@@ -118,5 +137,6 @@ private:
 	BallVector2 Ball9;
 	SpecialBallVector2 Rainball;
 
+	// Balls array
 	BallVector2 ball_array[10] = {Ball0, Ball1, Ball2, Ball3, Ball4, Ball5, Ball6, Ball7, Ball8, Ball9};
 };
