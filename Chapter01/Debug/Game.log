@@ -1,34 +1,35 @@
 ﻿  Game.cpp
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.h(124,2): error C2628: 'PlayerPaddle' seguido por 'int' é inválido (você esqueceu um ';'?)
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(23,2): error C2614: 'Game': inicialização de membro inválida: 'mPaddleDir' não é uma base ou membro
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(67,12): warning C4244: 'argumento': conversão de 'time_t' para 'unsigned int', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(69,2): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(70,2): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(71,2): error C2065: 'mPaddleReverseWait': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(84,38): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(85,38): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(87,62): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(88,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(92,39): warning C4244: '=': conversão de 'double' para 'int', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(136,2): error C2065: 'mPaddleDir': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(137,2): error C2065: 'mPaddleReverse': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(140,3): error C2065: 'mPaddleDir': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(144,3): error C2065: 'mPaddleDir': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(146,35): error C2065: 'mPaddleReverseWait': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(148,3): error C2065: 'mPaddleReverse': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(169,4): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(175,26): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(180,3): error C2065: 'mPaddleReverseWait': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(197,35): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(198,35): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(199,46): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(200,31): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(299,41): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(300,41): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(310,27): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(350,24): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(503,20): error C2065: 'mPaddlePos': identificador não declarado
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.cpp(504,20): error C2065: 'mPaddlePos': identificador não declarado
-  Main.cpp
-C:\Users\unifgchagas\Downloads\pong_ping-main\Chapter01\Game.h(124,2): error C2628: 'PlayerPaddle' seguido por 'int' é inválido (você esqueceu um ';'?)
-  Gerando Código...
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(68,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(91,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(92,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(94,62): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(95,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(99,39): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(242,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(243,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(244,46): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(245,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(341,41): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(342,41): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(352,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(503,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(504,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(505,46): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(506,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(604,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(605,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Game.cpp(615,28): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Game.vcxproj -> D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\Debug\Game.exe
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\libfreetype-6.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\libogg-0.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\libpng16-16.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\libvorbis-0.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\libvorbisfile-3.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\SDL2.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\SDL2_image.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\SDL2_mixer.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\SDL2_ttf.dll
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\SDL\lib\win\x86\zlib1.dll
+  10 File(s) copied
+  D:\lucam\Documents\Coding Stuff\FEI\7th Sem\Desen Jogos\pong_ping\Chapter01\\..\external\GLEW\lib\win\x86\glew32.dll
+  1 File(s) copied

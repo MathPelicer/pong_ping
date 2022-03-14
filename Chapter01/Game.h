@@ -64,7 +64,7 @@ struct SpecialBallVector2
 
 	int cooldown = 250;
 
-	int colour_changer_timer = 30;
+	int colour_changer_timer = 15;
 
 	int colour_changer = 0;
 

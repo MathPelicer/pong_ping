@@ -20,9 +20,10 @@ Game::Game()
 ,mRenderer(nullptr)//para fins de renderiza��o na tela
 ,mTicksCount(0)//para guardar o tempo decorrido no jogo
 ,mIsRunning(true)//verificar se o jogo ainda deve continuar sendo executado
-,mPaddleDir(0)//direcao da bolinha
+//,player_1//direcao da bolinha
 {
-	
+	player_array[0].mPaddleDir = 0;
+	player_array[1].mPaddleDir = 0;
 }
 
 bool Game::Initialize()
@@ -66,9 +67,15 @@ bool Game::Initialize()
 	
 	srand(time(NULL));
 
-	mPaddlePos.x = 10.0f;//posi��o inicial da raquete eixo x
-	mPaddlePos.y = 768.0f/2.0f;//posi��o inicial da raquee eixo y
-	mPaddleReverseWait = 0;
+	player_array[0].mPaddlePos.x = 10.0f;//posi��o inicial da raquete eixo x
+	player_array[0].mPaddlePos.y = 768.0f/2.0f;//posi��o inicial da raquee eixo y
+	player_array[0].mPaddleReverseWait = 0;
+	if (playerCount == 2)
+	{
+		player_array[1].mPaddlePos.x = 10.0f;//posi��o inicial da raquete eixo x
+		player_array[1].mPaddlePos.y = 768.0f / 2.0f;//posi��o inicial da raquee eixo y
+		player_array[1].mPaddleReverseWait = 0;
+	}
 	//mBallPos.x = 1024.0f/2.0f;//posi��o da bola eixo x
 	//mBallPos.y = 768.0f/2.0f;//posi��o da bola eixo y
 	//mBallVel.x = -200.0f;//velocidade de movimenta��o da bola no eixo x
@@ -135,47 +142,54 @@ void Game::ProcessInput()
 	// W -> move a raquete para cima, S -> move a raquete para baixo
 	
 	// Reseta as variáveis do player 1
-	player_1.mPaddleDir = 0;
-	player_1.mPaddleReverse = false;
+	player_array[0].mPaddleDir = 0;
+	player_array[0].mPaddleReverse = false;
 
 	// Reseta as variáveis do player 2
-	player_2.mPaddleDir = 0;
-	player_2.mPaddleReverse = false;
+	player_array[1].mPaddleDir = 0;
+	player_array[1].mPaddleReverse = false;
 
 	// Verifica qual o input do teclado
 
 	// Input para "subir" o player 1
 	if (state[SDL_SCANCODE_W])
 	{
-		player_1.mPaddleDir -= 1;
+		player_array[0].mPaddleDir -= 1;
 	}
 	// Input para "descer" o player 1
 	if (state[SDL_SCANCODE_S])
 	{
-		player_1.mPaddleDir += 1;
+		player_array[0].mPaddleDir += 1;
 	}
 	// Input para reverter a raquete do player 1
 	if (state[SDL_SCANCODE_SPACE] && player_1.mPaddleReverseWait == 0)
 	{
-		player_1.mPaddleReverse = true;
+		player_array[0].mPaddleReverse = true;
 	}
 
 	// Inputs player 2
 
+	// Input para iniciar o player 2
+	if (state[SDL_SCANCODE_2])
+	{
+		printf("Penis\n");
+		playerCount = 2;
+	}
+
 	// Input para "subir" o player 2
 	if (state[SDL_SCANCODE_UP])
 	{
-		player_2.mPaddleDir -= 1;
+		player_array[1].mPaddleDir -= 1;
 	}
 	// Input para "descer" o player 2
-	if (state[SDL_SCANCODE_S])
+	if (state[SDL_SCANCODE_DOWN])
 	{
-		player_2.mPaddleDir += 1;
+		player_array[1].mPaddleDir += 1;
 	}
 	// Input para reverter a raquete do player 2
-	if (state[SDL_SCANCODE_RETURN2] && player_2.mPaddleReverseWait == 0)
+	if (state[SDL_SCANCODE_RETURN] && player_array[1].mPaddleReverseWait == 0)
 	{
-		player_2.mPaddleReverse = true;
+		player_array[1].mPaddleReverse = true;
 	}
 	// Fecha o jogo
 	if (state[SDL_SCANCODE_ESCAPE])
@@ -187,28 +201,28 @@ void Game::ProcessInput()
 void Game::RunSingleplayer(float deltaTime)
 {
 	// atualiza a posi��o da raquete
-	if (player_1.mPaddleDir != 0)
+	if (player_array[0].mPaddleDir != 0)
 	{
-		player_1.mPaddlePos.y += player_1.mPaddleDir * 300.0f * deltaTime;
+		player_array[0].mPaddlePos.y += player_array[0].mPaddleDir * 300.0f * deltaTime;
 		// verifique que a raquete n�o se move para fora da tela - usamos "thickness", que definimos como a altura dos elementos
-		if (player_1.mPaddlePos.y < (paddleH / 2.0f + thickness))
+		if (player_array[0].mPaddlePos.y < (paddleH / 2.0f + thickness))
 		{
-			player_1.mPaddlePos.y = paddleH / 2.0f + thickness;
+			player_array[0].mPaddlePos.y = paddleH / 2.0f + thickness;
 		}
-		else if (player_1.mPaddlePos.y > (768.0f - paddleH / 2.0f - thickness))
+		else if (player_array[0].mPaddlePos.y > (768.0f - paddleH / 2.0f - thickness))
 		{
-			player_1.mPaddlePos.y = 768.0f - paddleH / 2.0f - thickness;
+			player_array[0].mPaddlePos.y = 768.0f - paddleH / 2.0f - thickness;
 		}
 	}
 
-	if (player_1.mPaddleReverse)
+	if (player_array[0].mPaddleReverse)
 	{
-		player_1.mPaddlePos.y = 768 - player_1.mPaddlePos.y;
-		player_1.mPaddleReverseWait = 25;
+		player_array[0].mPaddlePos.y = 768 - player_array[0].mPaddlePos.y;
+		player_array[0].mPaddleReverseWait = 25;
 	}
 
-	if (player_1.mPaddleReverseWait > 0) {
-		player_1.mPaddleReverseWait--;
+	if (player_array[0].mPaddleReverseWait > 0) {
+		player_array[0].mPaddleReverseWait--;
 	}
 
 	/*========================================*/
@@ -283,7 +297,7 @@ void Game::RunSingleplayer(float deltaTime)
 			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
 
 			// atualiza a posi��o da bola se ela colidiu com a raquete
-			float diff = player_1.mPaddlePos.y - ball_array[i].pos_y;
+			float diff = player_array[0].mPaddlePos.y - ball_array[i].pos_y;
 			//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
 			//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
 			//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
@@ -323,9 +337,6 @@ void Game::RunSingleplayer(float deltaTime)
 					}
 					else if (health == 2) {
 						health = 1;
-					}
-					else if (health == 1) {
-						health = 0;
 					}
 					ball_array[i].pos_x = rand() % 256 + 768;
 					ball_array[i].pos_y = rand() % 192 + 576;
@@ -378,7 +389,7 @@ void Game::RunSingleplayer(float deltaTime)
 		Rainball.pos_y += Rainball.speed_y * deltaTime;
 
 		// atualiza a posi��o da bola se ela colidiu com a raquete
-		float rainballDiff = mPaddlePos.y - Rainball.pos_y;
+		float rainballDiff = player_array[0].mPaddlePos.y - Rainball.pos_y;
 		//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
 		//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
 		//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
@@ -446,7 +457,268 @@ void Game::RunSingleplayer(float deltaTime)
 
 void Game::RunMultiplayer(float deltaTime) 
 {
+	for (int j = 0; j < 2; j++) {
+		if (player_array[j].mPaddleDir != 0)
+		{
+			player_array[j].mPaddlePos.y += player_array[j].mPaddleDir * 300.0f * deltaTime;
+			// verifique que a raquete n�o se move para fora da tela - usamos "thickness", que definimos como a altura dos elementos
+			if (player_array[j].mPaddlePos.y < (paddleH / 2.0f + thickness))
+			{
+				player_array[j].mPaddlePos.y = paddleH / 2.0f + thickness;
+			}
+			else if (player_array[j].mPaddlePos.y > (768.0f - paddleH / 2.0f - thickness))
+			{
+				player_array[j].mPaddlePos.y = 768.0f - paddleH / 2.0f - thickness;
+			}
+		}
+		if (player_array[j].mPaddleReverse)
+		{
+			player_array[j].mPaddlePos.y = 768 - player_array[j].mPaddlePos.y;
+			player_array[j].mPaddlePos.y = 768 - player_array[j].mPaddlePos.y;
+			player_array[j].mPaddleReverseWait = 25;
+		}
+
+		if (player_array[j].mPaddleReverseWait > 0) {
+			player_array[j].mPaddleReverseWait--;
+		}
+	}
 	
+	
+	
+
+	/*========================================*/
+	/*             Nosso C�digo               */
+	/*========================================*/
+
+	//Tenta invocar a bola especial
+
+	if (!Rainball.active) {
+
+		int nat20 = rand() % 20 + 1;
+
+		if (nat20 == 20) {
+			Rainball.cooldown--;
+			if (Rainball.cooldown == 0) {
+				Rainball.active = true;
+				Rainball.pos_x = rand() % 256 + 768;
+				Rainball.pos_y = rand() % 192 + 576;
+				Rainball.speed_x = ((rand() % 150) + 50) * (-1);
+				Rainball.speed_y = rand() % 300;
+
+			}
+		}
+
+	}
+
+	//Timer para mudar a cor da bola especial
+
+	int i;
+
+	if (Rainball.active) {
+		Rainball.colour_changer_timer--;
+		//Temporizador para trocar a cor chega a 0
+		if (Rainball.colour_changer_timer == 0) {
+			//Troca a cor da bola
+			for (i = 0; i < 10; i++) {
+				if (Rainball.red == 255 && (Rainball.green >= 0 && Rainball.green < 255) && Rainball.blue == 0) {
+					Rainball.green++;
+				}
+				else if ((Rainball.red > 0 && Rainball.red <= 255) && Rainball.green == 255 && Rainball.blue == 0) {
+					Rainball.red--;
+				}
+				else if (Rainball.red == 0 && Rainball.green == 255 && (Rainball.blue >= 0 && Rainball.blue < 255)) {
+					Rainball.blue++;
+				}
+				else if (Rainball.red == 0 && (Rainball.green > 0 && Rainball.green <= 255) && Rainball.blue == 255) {
+					Rainball.green--;
+				}
+				else if ((Rainball.red >= 0 && Rainball.red < 255) && Rainball.green == 0 && Rainball.blue == 255) {
+					Rainball.red++;
+				}
+				else if (Rainball.red == 255 && Rainball.green == 0 && (Rainball.blue > 0 && Rainball.blue <= 255)) {
+					Rainball.blue--;
+				}
+				//Reseta o temporizador
+				Rainball.colour_changer_timer = 15;
+			}
+		}
+	}
+
+	//Verifica colis�o das bolas
+
+	for (i = 0; i < 10; i++) {
+
+		if (ball_array[i].requirement <= score) {
+			ball_array[i].active = true;
+		}
+
+		if (ball_array[i].active) {
+
+			ball_array[i].pos_x += ball_array[i].speed_x * deltaTime;
+			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
+
+			// atualiza a posi��o da bola se ela colidiu com a raquete
+			for (int j = 0; j < 2; j++) {
+				float diff = player_array[j].mPaddlePos.y - ball_array[i].pos_y;
+
+				//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
+				//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
+				//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
+				diff = (diff > 0.0f) ? diff : -diff;
+				if (
+					// A diferen�a no eixo y y-difference is small enough
+					diff <= paddleH / 2.0f &&
+					// Estamos na posicao x correta
+					ball_array[i].pos_x <= 25.0f && ball_array[i].pos_x >= 20.0f &&
+					// A bolinha est� se movendo para a esquerda
+					ball_array[i].speed_x < 0.0f)
+				{
+					ball_array[i].speed_x *= -1.0f;
+				}
+				//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
+				//Se sim, encerra o jogo
+				// ====================
+				// FAZER ALTERA��O AQUI
+				// ====================
+				else if (ball_array[i].pos_x <= 0.0f)
+				{
+					if (health == 1) {
+						printf("Your score was %d\n", score);
+						mIsRunning = false;
+
+					}
+					else {
+						printf("Health: %d\n", health);
+						if (health == 5) {
+							health = 4;
+						}
+						else if (health == 4) {
+							health = 3;
+						}
+						else if (health == 3) {
+							health = 2;
+						}
+						else if (health == 2) {
+							health = 1;
+						}
+						ball_array[i].pos_x = rand() % 256 + 768;
+						ball_array[i].pos_y = rand() % 192 + 576;
+						ball_array[i].speed_x *= 0.75;
+						ball_array[i].speed_y *= 0.75;
+					}
+
+				}
+				// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
+				// 
+				else if (ball_array[i].pos_x >= (1024.0f - thickness) && ball_array[i].speed_x > 0.0f)
+				{
+					float speed_increment = (rand() % 21 - 10) / 100;
+
+					ball_array[i].speed_x *= -1.0f + speed_increment;
+
+					printf("+%d\n", ball_array[i].value);
+
+					score += ball_array[i].value;
+
+					printf("Your score is %d\n", score);
+
+				}
+				// Atualize (negative) a posi��o da bola se ela colidir com a parede de cima
+				// 
+				if (ball_array[i].pos_y <= thickness && ball_array[i].speed_y < 0.0f)
+				{
+					ball_array[i].speed_y *= -1;
+				}
+				// Atualize (negative) a posi��o da bola se ela colidiu com a parede de baixo
+				// Did the ball collide with the bottom wall?
+				else if (ball_array[i].pos_y >= (768 - thickness) && ball_array[i].speed_y > 0.0f)
+				{
+					ball_array[i].speed_y *= -1;
+				}
+			}
+			
+			
+
+		}
+
+	}
+
+
+
+	//=====================================
+	//Verifica as colisões da bola especial
+	//=====================================
+
+	if (Rainball.active) {
+
+		Rainball.pos_x += Rainball.speed_x * deltaTime;
+		Rainball.pos_y += Rainball.speed_y * deltaTime;
+
+		// atualiza a posi��o da bola se ela colidiu com a raquete
+		float rainballDiff = player_array[0].mPaddlePos.y - Rainball.pos_y;
+		//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
+		//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
+		//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
+		rainballDiff = (rainballDiff > 0.0f) ? rainballDiff : -rainballDiff;
+		if (
+			// A diferen�a no eixo y y-difference is small enough
+			rainballDiff <= paddleH / 2.0f &&
+			// Estamos na posicao x correta
+			Rainball.pos_x <= 25.0f && Rainball.pos_x >= 20.0f &&
+			// A bolinha est� se movendo para a esquerda
+			Rainball.speed_x < 0.0f)
+		{
+			Rainball.speed_x *= -1.0f;
+		}
+		//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
+		//Se sim, encerra o jogo
+		// ====================
+		// FAZER ALTERA��O AQUI
+		// ====================
+		else if (Rainball.pos_x <= 0.0f)
+		{
+
+			Rainball.pos_x = -10;
+			Rainball.pos_y = -10;
+			Rainball.speed_x *= 0;
+			Rainball.speed_y *= 0;
+			Rainball.active = false;
+			Rainball.cooldown = 150;
+
+		}
+		// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
+		// 
+		else if (Rainball.pos_x >= (1024.0f - thickness) && Rainball.speed_x > 0.0f)
+		{
+
+			Rainball.pos_x = -10;
+			Rainball.pos_y = -10;
+			Rainball.speed_x *= 0;
+			Rainball.speed_y *= 0;
+			Rainball.active = false;
+			Rainball.cooldown = 300;
+			printf("Special ball scored!!!\n");
+
+			if (health < 5) {
+				printf("+1 Health");
+				health++;
+			}
+
+		}
+		// Atualize (negative) a posi��o da bola se ela colidir com a parede de cima
+		// 
+		if (Rainball.pos_y <= thickness && Rainball.speed_y < 0.0f)
+		{
+			Rainball.speed_y *= -1;
+		}
+		// Atualize (negative) a posi��o da bola se ela colidiu com a parede de baixo
+		// Did the ball collide with the bottom wall?
+		else if (Rainball.pos_y >= (768 - thickness) && Rainball.speed_y > 0.0f)
+		{
+			Rainball.speed_y *= -1;
+		}
+
+	}
 }
 
 void Game::UpdateGame()
@@ -472,7 +744,7 @@ void Game::UpdateGame()
 		RunSingleplayer(deltaTime);
 	}
 	else if (playerCount == 2){
-		
+		RunMultiplayer(deltaTime);
 	}
 	
 }
@@ -530,13 +802,31 @@ void Game::GenerateOutput()
 
 	//desenhando a raquete - usando mPaddlePos que � uma struc de coordenada que foi definida em Game.h
 	// 
-	SDL_Rect paddle{
-		static_cast<int>(mPaddlePos.x),//static_cast converte de float para inteiros, pois SDL_Rect trabalha com inteiros
-		static_cast<int>(mPaddlePos.y - paddleH/2),
+	SDL_Rect paddle_1{
+		static_cast<int>(player_array[0].mPaddlePos.x),//static_cast converte de float para inteiros, pois SDL_Rect trabalha com inteiros
+		static_cast<int>(player_array[0].mPaddlePos.y - paddleH / 2),
 		thickness,
 		static_cast<int>(paddleH)
 	};
-	SDL_RenderFillRect(mRenderer, &paddle);
+	SDL_RenderFillRect(mRenderer, &paddle_1);
+
+	//desenhando a raquete - usando mPaddlePos que � uma struc de coordenada que foi definida em Game.h
+	// 
+	if (playerCount == 2)
+	{
+		SDL_Rect paddle_2{
+		static_cast<int>(player_array[1].mPaddlePos.x),//static_cast converte de float para inteiros, pois SDL_Rect trabalha com inteiros
+		static_cast<int>(player_array[1].mPaddlePos.y - paddleH / 2),
+		thickness,
+		static_cast<int>(paddleH)
+		};
+
+		SDL_SetRenderDrawColor(mRenderer, 66, 188, 245, 123);
+
+		SDL_RenderFillRect(mRenderer, &paddle_2);
+
+	}
+	
 
 	for (int i = 0; i < 10; i++) {
 
@@ -567,12 +857,6 @@ void Game::GenerateOutput()
 	// Desenha a bola especial
 
 	if (Rainball.active) {
-
-		int rainball_red = 255;
-
-		int rainball_blue = 0;
-
-		int rainball_green = 0;
 			
 		//mudar a cor do renderizador para a Ball0
 		SDL_SetRenderDrawColor(mRenderer, Rainball.red, Rainball.green, Rainball.blue, 255);
