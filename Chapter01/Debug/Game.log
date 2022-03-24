@@ -1,27 +1,4 @@
-﻿  Game.cpp
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(67,12): warning C4244: 'argumento': conversão de 'time_t' para 'unsigned int', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(98,62): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(99,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(103,39): warning C4244: '=': conversão de 'double' para 'int', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(248,35): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(249,29): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(250,46): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(251,31): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(298,39): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(299,33): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(351,41): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(352,35): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(362,27): warning C4244: 'inicializando': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(511,33): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(512,33): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(566,40): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(567,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(568,35): warning C4305: '*=': truncamento de 'double' para 'float'
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(569,34): warning C4305: '*=': truncamento de 'double' para 'float'
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(581,40): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(582,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(583,35): warning C4305: '*=': truncamento de 'double' para 'float'
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Game.cpp(584,34): warning C4305: '*=': truncamento de 'double' para 'float'
+﻿  Main.cpp
   Game.vcxproj -> F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Debug\Game.exe
   F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\\..\external\SDL\lib\win\x86\libfreetype-6.dll
   F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\\..\external\SDL\lib\win\x86\libogg-0.dll

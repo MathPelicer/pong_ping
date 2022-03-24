@@ -7,15 +7,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="GamePong.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameArkanoid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="GamePong.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameArkanoid.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
