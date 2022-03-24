@@ -28,6 +28,9 @@ struct PlayerPaddle
 
 	// Position of paddle
 	Vector2 mPaddlePos;
+
+	// Player Score
+	int score;
 };
 
 struct BallVector2
@@ -103,7 +106,7 @@ private:
 	// Game should continue to run
 	bool mIsRunning;
 	// Player count
-	int playerCount = 1;
+	int playerCount;
 
 	// Pong specific
 	// Player 1
@@ -115,16 +118,18 @@ private:
 	// Players array
 	PlayerPaddle player_array[2] = {player_1, player_2};
 
-	// Player Score
-	int score;
-	// Player Health
+	// Player Health (singleplayer)
 	int health;
+	// Player Score (singleplayer)
+	int singleplayer_score;
+	// Players Total Score (multiplayer)
+	int players_total_score;
 	// Position of ball
 	Vector2 mBallPos;
 	// Velocity of ball
 	Vector2 mBallVel;
 
-	// Shit tons of balls B****
+	// On the Ball - Bryce Vine
 	BallVector2 Ball0;
 	BallVector2 Ball1;
 	BallVector2 Ball2;
