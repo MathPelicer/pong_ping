@@ -88,14 +88,14 @@ bool GamePong::Initialize()
 	singleplayer_score = 0;
 
 	// Define a pontuação total dos jogadores (multiplayer)
-	players_total_score = 0;
+	ball_rebounce = 0;
 
 	// Inicializa as bolas
 
 	for (int i = 0; i < 10; i++) {
 		// Define a velocidade inicial da bola
-		ball_array[i].speed_x = ((rand() % 100) + ((i + 1) * 100)) * ( - 1);
-		ball_array[i].speed_y = rand() % 500;
+		ball_array[i].mBallSpeed.x = ((rand() % 100) + ((i + 1) * 100)) * ( - 1);
+		ball_array[i].mBallSpeed.y = rand() % 500;
 		//Define a pontua��o da bola
 		ball_array[i].value = i + 1;
 		//Define a pontua��o necess�ria para ativar a bola
@@ -244,10 +244,10 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 			Rainball.cooldown--;
 			if (Rainball.cooldown == 0) {
 				Rainball.active = true;
-				Rainball.pos_x = rand() % 256 + 768;
-				Rainball.pos_y = rand() % 768;
-				Rainball.speed_x = ((rand() % 250) + 75) * (-1);
-				Rainball.speed_y = rand() % 300;
+				Rainball.mBallPos.x = rand() % 256 + 768;
+				Rainball.mBallPos.y = rand() % 768;
+				Rainball.mBallSpeed.x = ((rand() % 250) + 75) * (-1);
+				Rainball.mBallSpeed.y = rand() % 300;
 
 			}
 		}
@@ -294,19 +294,19 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 
 		if (ball_array[i].requirement <= singleplayer_score && !ball_array[i].active) {
 			// Define a posição inicial da bola
-			ball_array[i].pos_x = rand() % 512 + 512;
-			ball_array[i].pos_y = rand() % 768;
+			ball_array[i].mBallPos.x = rand() % 512 + 512;
+			ball_array[i].mBallPos.y = rand() % 768;
 			// Ativa a bola
 			ball_array[i].active = true;
 		}
 
 		if (ball_array[i].active) {
 
-			ball_array[i].pos_x += ball_array[i].speed_x * deltaTime;
-			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
+			ball_array[i].mBallPos.x += ball_array[i].mBallSpeed.x * deltaTime;
+			ball_array[i].mBallPos.y += ball_array[i].mBallSpeed.y * deltaTime;
 
 			// atualiza a posição da bola se ela colidiu com a raquete
-			float diff = player_array[0].mPaddlePos.y - ball_array[i].pos_y;
+			float diff = player_array[0].mPaddlePos.y - ball_array[i].mBallPos.y;
 			//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
 			//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
 			//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
@@ -315,18 +315,18 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 				// A diferen�a no eixo y y-difference is small enough
 				diff <= paddleH / 2.0f &&
 				// Estamos na posicao x correta
-				ball_array[i].pos_x <= 25.0f && ball_array[i].pos_x >= 20.0f &&
+				ball_array[i].mBallPos.x <= 25.0f && ball_array[i].mBallPos.x >= 20.0f &&
 				// A bolinha est� se movendo para a esquerda
-				ball_array[i].speed_x < 0.0f)
+				ball_array[i].mBallSpeed.x < 0.0f)
 			{
-				ball_array[i].speed_x *= -1.0f;
+				ball_array[i].mBallSpeed.x *= -1.0f;
 			}
 			//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
 			//Se sim, encerra o jogo
 			// ====================
-			// FAZER ALTERA��O AQUI
+			// FAZER ALTERAÇÃO AQUI
 			// ====================
-			else if (ball_array[i].pos_x <= 0.0f)
+			else if (ball_array[i].mBallPos.x <= 0.0f)
 			{
 				if (health == 1) {
 					printf("Your score was %d\n", singleplayer_score);
@@ -347,20 +347,20 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 					else if (health == 2) {
 						health = 1;
 					}
-					ball_array[i].pos_x = rand() % 256 + 768;
-					ball_array[i].pos_y = rand() % 768;
-					ball_array[i].speed_x *= 0.75;
-					ball_array[i].speed_y *= 0.75;
+					ball_array[i].mBallPos.x = rand() % 256 + 768;
+					ball_array[i].mBallPos.y = rand() % 768;
+					ball_array[i].mBallSpeed.x *= 0.75;
+					ball_array[i].mBallSpeed.y *= 0.75;
 				}
 
 			}
 			// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
 			// 
-			else if (ball_array[i].pos_x >= (1024.0f - thickness) && ball_array[i].speed_x > 0.0f)
+			else if (ball_array[i].mBallPos.x >= (1024.0f - thickness) && ball_array[i].mBallSpeed.x > 0.0f)
 			{
 				float speed_increment = (rand() % 21 - 10) / 100;
 
-				ball_array[i].speed_x *= -1.0f + speed_increment;
+				ball_array[i].mBallSpeed.x *= -1.0f + speed_increment;
 
 				printf("+%d\n", ball_array[i].value);
 
@@ -371,15 +371,15 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 			}
 			// Atualize (negative) a posi��o da bola se ela colidir com a parede de cima
 			// 
-			if (ball_array[i].pos_y <= thickness && ball_array[i].speed_y < 0.0f)
+			if (ball_array[i].mBallPos.y <= thickness && ball_array[i].mBallSpeed.y < 0.0f)
 			{
-				ball_array[i].speed_y *= -1;
+				ball_array[i].mBallSpeed.y *= -1;
 			}
 			// Atualize (negative) a posi��o da bola se ela colidiu com a parede de baixo
 			// Did the ball collide with the bottom wall?
-			else if (ball_array[i].pos_y >= (768 - thickness) && ball_array[i].speed_y > 0.0f)
+			else if (ball_array[i].mBallPos.y >= (768 - thickness) && ball_array[i].mBallSpeed.y > 0.0f)
 			{
-				ball_array[i].speed_y *= -1;
+				ball_array[i].mBallSpeed.y *= -1;
 			}
 
 		}
@@ -394,11 +394,11 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 
 	if (Rainball.active) {
 
-		Rainball.pos_x += Rainball.speed_x * deltaTime;
-		Rainball.pos_y += Rainball.speed_y * deltaTime;
+		Rainball.mBallPos.x += Rainball.mBallSpeed.x * deltaTime;
+		Rainball.mBallPos.y += Rainball.mBallSpeed.y * deltaTime;
 
 		// atualiza a posi��o da bola se ela colidiu com a raquete
-		float rainballDiff = player_array[0].mPaddlePos.y - Rainball.pos_y;
+		float rainballDiff = player_array[0].mPaddlePos.y - Rainball.mBallPos.y;
 		//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
 		//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
 		//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
@@ -407,37 +407,37 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 			// A diferen�a no eixo y y-difference is small enough
 			rainballDiff <= paddleH / 2.0f &&
 			// Estamos na posicao x correta
-			Rainball.pos_x <= 25.0f && Rainball.pos_x >= 20.0f &&
+			Rainball.mBallPos.x <= 25.0f && Rainball.mBallPos.x >= 20.0f &&
 			// A bolinha est� se movendo para a esquerda
-			Rainball.speed_x < 0.0f)
+			Rainball.mBallSpeed.x < 0.0f)
 		{
-			Rainball.speed_x *= -1.0f;
+			Rainball.mBallSpeed.x *= -1.0f;
 		}
 		//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
 		//Se sim, encerra o jogo
 		// ====================
 		// FAZER ALTERA��O AQUI
 		// ====================
-		else if (Rainball.pos_x <= 0.0f)
+		else if (Rainball.mBallPos.x <= 0.0f)
 		{
 
-			Rainball.pos_x = -10;
-			Rainball.pos_y = -10;
-			Rainball.speed_x *= 0;
-			Rainball.speed_y *= 0;
+			Rainball.mBallPos.x = -10;
+			Rainball.mBallPos.y = -10;
+			Rainball.mBallSpeed.x *= 0;
+			Rainball.mBallSpeed.y *= 0;
 			Rainball.active = false;
 			Rainball.cooldown = 150;
 
 		}
 		// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
 		// 
-		else if (Rainball.pos_x >= (1024.0f - thickness) && Rainball.speed_x > 0.0f)
+		else if (Rainball.mBallPos.x >= (1024.0f - thickness) && Rainball.mBallSpeed.x > 0.0f)
 		{
 
-			Rainball.pos_x = -10;
-			Rainball.pos_y = -10;
-			Rainball.speed_x *= 0;
-			Rainball.speed_y *= 0;
+			Rainball.mBallPos.x = -10;
+			Rainball.mBallPos.y = -10;
+			Rainball.mBallSpeed.x *= 0;
+			Rainball.mBallSpeed.y *= 0;
 			Rainball.active = false;
 			Rainball.cooldown = 300;
 			printf("Special ball scored!!!\n");
@@ -450,15 +450,15 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 		}
 		// Atualize (negative) a posi��o da bola se ela colidir com a parede de cima
 		// 
-		if (Rainball.pos_y <= thickness && Rainball.speed_y < 0.0f)
+		if (Rainball.mBallPos.y <= thickness && Rainball.mBallSpeed.y < 0.0f)
 		{
-			Rainball.speed_y *= -1;
+			Rainball.mBallSpeed.y *= -1;
 		}
 		// Atualize (negative) a posi��o da bola se ela colidiu com a parede de baixo
 		// Did the ball collide with the bottom wall?
-		else if (Rainball.pos_y >= (768 - thickness) && Rainball.speed_y > 0.0f)
+		else if (Rainball.mBallPos.y >= (768 - thickness) && Rainball.mBallSpeed.y > 0.0f)
 		{
-			Rainball.speed_y *= -1;
+			Rainball.mBallSpeed.y *= -1;
 		}
 
 	}
@@ -466,8 +466,6 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 
 void GamePong::RunPongMultiplayer(float deltaTime)
 {
-	// Soma as pontuações dos players para saber quando ativar as bolas
-	players_total_score = player_array[0].score + player_array[1].score;
 
 	for (int j = 0; j < 2; j++) {
 		if (player_array[j].mPaddleDir != 0)
@@ -505,24 +503,24 @@ void GamePong::RunPongMultiplayer(float deltaTime)
 	int i;
 	for (i = 0; i < 10; i++) {
 
-		if (ball_array[i].requirement * (2 * i) <= players_total_score && !ball_array[i].active) {
+		if (ball_array[i].requirement * (2 * i) <= ball_rebounce && !ball_array[i].active) {
 			// Define as posições iniciais das bolas
-			ball_array[i].pos_x = rand() % 512;
-			ball_array[i].pos_y = rand() % 768;
+			ball_array[i].mBallPos.x = rand() % 512;
+			ball_array[i].mBallPos.y = rand() % 768;
 			if (player_array[1].score > player_array[0].score) {
-				ball_array[i].speed_x *= -1;
+				ball_array[i].mBallSpeed.x *= -1;
 			}
 			ball_array[i].active = true;
 		}
 
 		if (ball_array[i].active) {
 
-			ball_array[i].pos_x += ball_array[i].speed_x * deltaTime;
-			ball_array[i].pos_y += ball_array[i].speed_y * deltaTime;
+			ball_array[i].mBallPos.x += ball_array[i].mBallSpeed.x * deltaTime;
+			ball_array[i].mBallPos.y += ball_array[i].mBallSpeed.y * deltaTime;
 
 			// atualiza a posição da bola se ela colidiu com a raquete
-			float diff1 = player_array[0].mPaddlePos.y - ball_array[i].pos_y;
-			float diff2 = player_array[1].mPaddlePos.y - ball_array[i].pos_y;
+			float diff1 = player_array[0].mPaddlePos.y - ball_array[i].mBallPos.y;
+			float diff2 = player_array[1].mPaddlePos.y - ball_array[i].mBallPos.y;
 
 			//pegue o valor absoluto de diferença entre o eixo y da bolinha e da raquete
 			//isso é necessário para os casos em que no próximo frame a bolinha ainda não esteja tão distante da raquete
@@ -532,17 +530,18 @@ void GamePong::RunPongMultiplayer(float deltaTime)
 			// A diferença no eixo y y-difference é pequena o suficiente para o player 1
 			if ((diff1 <= paddleH / 2.0f && 
 				// Estamos na posicao x correta
-				ball_array[i].pos_x <= 25.0f && ball_array[i].pos_x >= 20.0f && 
+				ball_array[i].mBallPos.x <= 25.0f && ball_array[i].mBallPos.x >= 20.0f && 
 				// A bolinha está se movendo para a esquerda
-				ball_array[i].speed_x < 0.0f) ||
+				ball_array[i].mBallSpeed.x < 0.0f) ||
 				// A diferença no eixo y y-difference é pequena o suficiente para o player 2
 				(diff2 <= paddleH / 2.0f &&
 				// Estamos na posicao x correta
-				ball_array[i].pos_x <= 985.0f && ball_array[i].pos_x >= 970.0f &&
+				ball_array[i].mBallPos.x <= 985.0f && ball_array[i].mBallPos.x >= 970.0f &&
 				// A bolinha está se movendo para a direita
-				ball_array[i].speed_x > 0.0f))
+				ball_array[i].mBallSpeed.x > 0.0f))
 			{
-				ball_array[i].speed_x *= -1.03f;
+				ball_array[i].mBallSpeed.x *= -1.03f;
+				ball_rebounce++;
 			}
 			// A diferença no eixo y y-difference é pequena o suficiente para o player 2
 			/*else if (diff2 <= paddleH / 2.0f &&
@@ -554,56 +553,62 @@ void GamePong::RunPongMultiplayer(float deltaTime)
 				ball_array[i].speed_x *= -1.03f;
 			}*/
 			//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
-			else if (ball_array[i].pos_x <= 0.0f)
+			else if (ball_array[i].mBallPos.x <= 0.0f)
 			{
 				// Incrementa a pontuação do player 2
 				player_array[1].score += ball_array[i].value;
 				printf("Player 2 scored!\n");
 				printf("Player 2 score = %d\n", player_array[1].score);
 
-				if (player_array[1].score == 10) {
+				//Reseta a quantidade de vezes que a bola foi rebatida
+				ball_rebounce = 0;
+
+				if (player_array[1].score >= 10) {
 					printf("Player 2 won!\n");
 					mIsRunning = false;
 				}
 
 				// Reposiciona a bola no jogo
-				ball_array[i].pos_x = rand() % 226 + 30;
-				ball_array[i].pos_y = rand() % 768;
-				ball_array[i].speed_x *= -0.90;
-				ball_array[i].speed_y *= 0.95;
+				ball_array[i].mBallPos.x = rand() % 226 + 30;
+				ball_array[i].mBallPos.y = rand() % 768;
+				ball_array[i].mBallSpeed.x *= -0.90;
+				ball_array[i].mBallSpeed.y *= 0.95;
 								}
 			// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
 			// 
-			else if (ball_array[i].pos_x >= (1024.0f - thickness) && ball_array[i].speed_x > 0.0f)
+			else if (ball_array[i].mBallPos.x >= (1024.0f - thickness) && ball_array[i].mBallSpeed.x > 0.0f)
 			{
 				// Incrementa a pontuação do player 1
 				player_array[0].score += ball_array[i].value;
 				printf("Player 1 scored!\n");
 				printf("Player 1 score = %d\n", player_array[0].score);
 
-				if (player_array[0].score == 10) {
+				//Reseta a quantidade de vezes que a bola foi rebatida
+				ball_rebounce = 0;
+
+				if (player_array[0].score >= 10) {
 					printf("Player 1 won!\n");
 					mIsRunning = false;
 				}
 
 				// Reposiciona a bola no jogo
-				ball_array[i].pos_x = rand() % 226 + 768;
-				ball_array[i].pos_y = rand() % 768;
-				ball_array[i].speed_x *= -0.90;
-				ball_array[i].speed_y *= 0.95;
+				ball_array[i].mBallPos.x = rand() % 226 + 768;
+				ball_array[i].mBallPos.y = rand() % 768;
+				ball_array[i].mBallSpeed.x *= -0.90;
+				ball_array[i].mBallSpeed.y *= 0.95;
 
 			}
 			// Atualize (negative) a posição da bola se ela colidir com a parede de cima
 			// 
-			if (ball_array[i].pos_y <= thickness && ball_array[i].speed_y < 0.0f)
+			if (ball_array[i].mBallPos.y <= thickness && ball_array[i].mBallSpeed.y < 0.0f)
 			{
-				ball_array[i].speed_y *= -1;
+				ball_array[i].mBallSpeed.y *= -1;
 			}
 			// Atualize (negative) a posição da bola se ela colidiu com a parede de baixo
 			// Did the ball collide with the bottom wall?
-			else if (ball_array[i].pos_y >= (768 - thickness) && ball_array[i].speed_y > 0.0f)
+			else if (ball_array[i].mBallPos.y >= (768 - thickness) && ball_array[i].mBallSpeed.y > 0.0f)
 			{
-				ball_array[i].speed_y *= -1;
+				ball_array[i].mBallSpeed.y *= -1;
 			}
 
 		}
@@ -728,8 +733,8 @@ void GamePong::GenerateOutput()
 			SDL_SetRenderDrawColor(mRenderer, ball_array[i].red, ball_array[i].green, ball_array[i].blue, 255);
 
 			SDL_Rect Ball{
-				static_cast<int>(ball_array[i].pos_x - thickness / 2),
-				static_cast<int>(ball_array[i].pos_y - thickness / 2),
+				static_cast<int>(ball_array[i].mBallPos.x - thickness / 2),
+				static_cast<int>(ball_array[i].mBallPos.y - thickness / 2),
 				thickness,
 				thickness
 			};
@@ -753,8 +758,8 @@ void GamePong::GenerateOutput()
 		SDL_SetRenderDrawColor(mRenderer, Rainball.red, Rainball.green, Rainball.blue, 255);
 
 		SDL_Rect SDLRainball{
-			static_cast<int>(Rainball.pos_x - thickness / 2),
-			static_cast<int>(Rainball.pos_y - thickness / 2),
+			static_cast<int>(Rainball.mBallPos.x - thickness / 2),
+			static_cast<int>(Rainball.mBallPos.y - thickness / 2),
 			thickness,
 			thickness
 		};

@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------
 
 #include "GamePong.h"
-//#include "GameArkanoid.h"
+#include "GameArkanoid.h"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -32,13 +32,13 @@ int main(int argc, char** argv)
 		}
 		else if (option == 2) {
 			std::cout << "You are playing arkanoid. Enjoy." << std::endl;
-			/*GameArkanoid arkanoid;
+			GameArkanoid arkanoid;
 			bool success = arkanoid.Initialize();
 			if (success)
 			{
 				arkanoid.RunLoop();
 			}
-			arkanoid.Shutdown();*/
+			arkanoid.Shutdown();
 		}
 		else if (option == 3) {
 			break;

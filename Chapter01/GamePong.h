@@ -8,74 +8,7 @@
 
 #pragma once
 #include "SDL/SDL.h"
-
-// Vector2 struct just stores x/y coordinates
-// (for now)
-struct Vector2
-{
-	float x;
-	float y;
-};
-
-struct PlayerPaddle
-{
-	// Direction of paddle
-	int mPaddleDir;
-
-	// Reverse paddle
-	bool mPaddleReverse;
-	int mPaddleReverseWait;
-
-	// Position of paddle
-	Vector2 mPaddlePos;
-
-	// Player Score
-	int score;
-};
-
-struct BallVector2
-{
-
-	float pos_x;
-	float pos_y;
-
-	float speed_x;
-	float speed_y;
-
-	bool active = false;
-
-	int requirement;
-
-	int value;
-
-	int red;
-	int green;
-	int blue;
-
-};
-
-struct SpecialBallVector2
-{
-
-	float pos_x;
-	float pos_y;
-
-	float speed_x;
-	float speed_y;
-
-	bool active = false;
-
-	int cooldown = 250;
-
-	int colour_changer_timer = 15;
-
-	int colour_changer = 0;
-
-	int red = 255;
-	int green = 0;
-	int blue = 0;
-
-};
+#include "Game.h"
 
 
 // Game class
@@ -122,8 +55,8 @@ private:
 	int health;
 	// Player Score (singleplayer)
 	int singleplayer_score;
-	// Players Total Score (multiplayer)
-	int players_total_score;
+	// Times the ball was rebounced (multiplayer)
+	int ball_rebounce;
 	// Position of ball
 	Vector2 mBallPos;
 	// Velocity of ball

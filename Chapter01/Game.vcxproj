@@ -16,6 +16,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GamePong.h" />
     <ClInclude Include="GameArkanoid.h" />
   </ItemGroup>

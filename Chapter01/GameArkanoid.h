@@ -8,49 +8,7 @@
 
 #pragma once
 #include "SDL/SDL.h"
-
-// Vector2 struct just stores x/y coordinates
-// (for now)
-struct Vector2
-{
-	float x;
-	float y;
-};
-
-struct PlayerPaddle
-{
-	// Direction of paddle
-	int mPaddleDir;
-
-	// Reverse paddle
-	bool mPaddleReverse;
-	int mPaddleReverseWait;
-
-	// Position of paddle
-	Vector2 mPaddlePos;
-
-	// Player Score
-	int score;
-};
-
-struct BallVector2
-{
-
-	Vector2 mBallPos;
-
-	Vector2 mBallSpeed;
-
-	bool active;
-
-	int requirement;
-
-	int value;
-
-	int red;
-	int green;
-	int blue;
-
-};
+#include "Game.h"
 
 
 // Game class
@@ -83,9 +41,11 @@ private:
 	// Arkanoid specific
 	// Player
 	PlayerPaddle player_1;
-
-	// Player Health
 	int health;
+
+	// Shoot ball (Start game)
+	bool ball_shot;
+	int ball_direction;
 
 	// On the Ball - Bryce Vine
 	BallVector2 Ball0;

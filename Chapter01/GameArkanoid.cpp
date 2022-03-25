@@ -5,7 +5,7 @@
 #include <time.h>
 
 const int thickness = 15;//sera usado para setar a altura de alguns objetos
-const float paddleH = 100.0f;//tamanho da raquete
+const float paddleW = 100.0f;//tamanho da raquete
 
 GameArkanoid::GameArkanoid()
 	:mWindow(nullptr)//para criar uma janela
@@ -13,7 +13,8 @@ GameArkanoid::GameArkanoid()
 	, mTicksCount(0)//para guardar o tempo decorrido no jogo
 	, mIsRunning(true)//verificar se o jogo ainda deve continuar sendo executado
 {
-
+	ball_shot = false;
+	ball_direction = 1;
 }
 
 bool GameArkanoid::Initialize()
@@ -32,7 +33,7 @@ bool GameArkanoid::Initialize()
 		100,	// Top left x-coordinate of window
 		100,	// Top left y-coordinate of window
 		768,	// Width of window
-		1024,	// Height of window
+		896,	// Height of window
 		0		// Flags (0 for no flags set)
 	);
 
@@ -58,7 +59,7 @@ bool GameArkanoid::Initialize()
 	srand(time(NULL));
 
 	player_1.mPaddlePos.x = 768.0f / 2.0f;//posição inicial da raquete eixo x
-	player_1.mPaddlePos.y = 30.0f;//posição inicial da raquete eixo y
+	player_1.mPaddlePos.y = 870.0f;//posição inicial da raquete eixo y
 	player_1.mPaddleReverseWait = 0;
 	player_1.mPaddleDir = 0;
 	player_1.score = 0;
@@ -70,15 +71,13 @@ bool GameArkanoid::Initialize()
 	player_1.score = 0;
 
 	// Inicializa as bolas
-
+	ball_array[0].draw_only = true;
 	for (int i = 0; i < 10; i++) {
+		// Define a bola como desativada
+		ball_array[i].active = false;
 		// Define a velocidade inicial da bola
-		ball_array[i].mBallSpeed.x = ((rand() % 100) + ((i + 1) * 100)) * (-1);
-		ball_array[i].mBallSpeed.y = rand() % 500;
-		//Define a pontua��o da bola
-		ball_array[i].value = i + 1;
-		//Define a pontua��o necess�ria para ativar a bola
-		ball_array[i].requirement = (i * 5) * 1.4;
+		ball_array[i].mBallSpeed.x = 200.0f;
+		ball_array[i].mBallSpeed.y = -250.0f;
 		//Define as cores da bola
 		ball_array[i].red = rand() % 200 + 55;
 		ball_array[i].blue = rand() % 200 + 55;
@@ -120,24 +119,34 @@ void GameArkanoid::ProcessInput()
 		mIsRunning = false;
 	}
 
-	// Update paddle direction based on W/S keys - atualize a dire��o da raquete com base na entrada do jogador
-	// W -> move a raquete para cima, S -> move a raquete para baixo
+	// Update paddle direction based on A/D keys - atualize a direção da raquete com base na entrada do jogador
+	// A -> move a raquete para esquerda, D -> move a raquete para direita
 
 	// Reseta as variáveis do player
 	player_1.mPaddleDir = 0;
-	player_1.mPaddleReverse = false;
+	//player_1.mPaddleReverse = false;
 
 	// Verifica qual o input do teclado
 
-	// Input para "subir" o player
-	if (state[SDL_SCANCODE_D])
-	{
-		player_1.mPaddleDir -= 1;
-	}
-	// Input para "descer" o player
+	// Input para mover o player para a esquerda
 	if (state[SDL_SCANCODE_A])
 	{
+		player_1.mPaddleDir -= 1;
+		ball_direction = -1;
+	}
+	// Input para mover o player para a direita
+	if (state[SDL_SCANCODE_D])
+	{
 		player_1.mPaddleDir += 1;
+		ball_direction = 1;
+	}
+	// Input para lançar a bola
+	if (state[SDL_SCANCODE_SPACE])
+	{
+		ball_shot = true;
+		ball_array[0].active = true;
+		ball_array[0].draw_only = false;
+		ball_array[0].mBallSpeed.x *= ball_direction;
 	}
 	// Input para reverter a raquete do player
 	/*if (state[SDL_SCANCODE_SPACE] && player_1.mPaddleReverseWait == 0)
@@ -155,21 +164,24 @@ void GameArkanoid::RunArkanoid(float deltaTime) {
 	// atualiza a posição da raquete
 	if (player_1.mPaddleDir != 0)
 	{
-		player_1.mPaddlePos.x += player_1.mPaddleDir * 300.0f * deltaTime;
+		player_1.mPaddlePos.x += player_1.mPaddleDir * 550.0f * deltaTime;
 		// verifique que a raquete n�o se move para fora da tela - usamos "thickness", que definimos como a altura dos elementos
-		if (player_1.mPaddlePos.x < (paddleH / 2.0f + thickness))
+		if (player_1.mPaddlePos.x < (paddleW / 2.0f + thickness))
 		{
-			player_1.mPaddlePos.x = paddleH / 2.0f + thickness;
+			player_1.mPaddlePos.x = paddleW / 2.0f + thickness;
 		}
-		else if (player_1.mPaddlePos.x > (768.0f - paddleH / 2.0f - thickness))
+		else if (player_1.mPaddlePos.x > (768.0f - paddleW / 2.0f - thickness))
 		{
-			player_1.mPaddlePos.x = 768.0f - paddleH / 2.0f - thickness;
+			player_1.mPaddlePos.x = 768.0f - paddleW / 2.0f - thickness;
 		}
 	}
 
+	if (!ball_shot) {
+		ball_array[0].mBallPos.x = player_1.mPaddlePos.x + paddleW / 2.0f;
+		ball_array[0].mBallPos.y = 800.0f;
+	}
 
-
-	if (player_1.mPaddleReverse)
+	/*if (player_1.mPaddleReverse)
 	{
 		player_1.mPaddlePos.y = 768 - player_1.mPaddlePos.x;
 		player_1.mPaddleReverseWait = 50;
@@ -177,6 +189,73 @@ void GameArkanoid::RunArkanoid(float deltaTime) {
 
 	if (player_1.mPaddleReverseWait > 0) {
 		player_1.mPaddleReverseWait--;
+	}*/
+
+	// ====================
+	// FAZER ALTERAÇÃO AQUI
+	// ====================
+
+	ball_array[0].mBallPos.x += ball_array[0].mBallSpeed.x * deltaTime;
+	ball_array[0].mBallPos.y += ball_array[0].mBallSpeed.y * deltaTime;
+
+	// atualiza a posição da bola se ela colidiu com a raquete
+	float diff = player_1.mPaddlePos.x - ball_array[0].mBallPos.x;
+	//pegue o valor absoluto de diferen�a entre o eixo y da bolinha e da raquete
+	//isso � necess�rio para os casos em que no pr�ximo frame a bolinha ainda n�o esteja t�o distante da raquete
+	//verifica se a bola est� na area da raquete e na mesma posi��o no eixo x
+	diff = (diff > 0.0f) ? diff : -diff;
+	if (
+		// A diferen�a no eixo x x-difference is small enough
+		diff <= paddleW / 2.0f &&
+		// Estamos na posição y correta
+		ball_array[0].mBallPos.y <= 885.0f && ball_array[0].mBallPos.y >= 880.0f &&
+		// A bolinha está se movendo para baixo
+		ball_array[0].mBallSpeed.y > 0.0f)
+	{
+		ball_array[0].mBallSpeed.y *= -1.0f;
+	}
+	//Verifica se a bola saiu da tela (no lado esquerdo, onde � permitido)
+	//Se sim, encerra o jogo
+	else if (ball_array[0].mBallPos.x <= 0.0f)
+	{
+		ball_array[0].mBallSpeed.x *= -1.05f;
+
+	}
+	// Atualize (negative) a velocidade da bola se ela colidir com a parede do lado direito
+	// 
+	else if (ball_array[0].mBallPos.x >= (768.0f - thickness) && ball_array[0].mBallSpeed.x > 0.0f)
+	{
+		ball_array[0].mBallSpeed.x *= -1.05f;
+	}
+	// Atualize (negative) a posição da bola se ela colidir com a parede de cima
+	// 
+	if (ball_array[0].mBallPos.y <= thickness && ball_array[0].mBallSpeed.y < 0.0f)
+	{
+		ball_array[0].mBallSpeed.y *= -1.05f;
+	}
+	// Atualize (negative) a posição da bola se ela colidiu com a parede de baixo
+	// Did the ball collide with the bottom wall?
+	else if (ball_array[0].mBallPos.y >= (896.0f - thickness) && ball_array[0].mBallSpeed.y > 0.0f)
+	{
+		if (health == 1) {
+			mIsRunning = false;
+
+		}
+		else {
+			printf("Health: %d\n", health);
+			if (health == 5) {
+				health = 4;
+			}
+			else if (health == 4) {
+				health = 3;
+			}
+			else if (health == 3) {
+				health = 2;
+			}
+			else if (health == 2) {
+				health = 1;
+			}
+		}
 	}
 }
 
@@ -219,7 +298,7 @@ void GameArkanoid::GenerateOutput()
 	SDL_RenderClear(mRenderer);
 
 	// Desenha as paredes - mudamos a cor de mRenderer para o desenho dos retangulos que formaram as paredes
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(mRenderer, 0, 255, 0, 255);
 
 	// Desenha a parede de cima - desenhando um retangulo no topo da tela, coordenada x e y = 0, 0 representa o topo esquerdo
 	//primeiro definimos as coordenadas e tamanhos do triangulo
@@ -231,15 +310,15 @@ void GameArkanoid::GenerateOutput()
 	};
 	SDL_RenderFillRect(mRenderer, &wall);//finalmente, desenhamos um retangulo no topo
 
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(mRenderer, 255, 0, 0, 255);
 
 	//desenhamos as outras paredes apenas mudando as coordenadas de wall
 
 	// parede de baixo
-	wall.y = 1024 - thickness;
+	wall.y = 896 - thickness;
 	SDL_RenderFillRect(mRenderer, &wall);
 
-	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 255, 255);
 
 	// parede da direita
 	wall.x = 768 - thickness;
@@ -249,7 +328,7 @@ void GameArkanoid::GenerateOutput()
 	SDL_RenderFillRect(mRenderer, &wall);
 
 	// parede da esquerda
-	wall.x = thickness;
+	wall.x = 0;
 	wall.y = 0;
 	wall.w = thickness;
 	wall.h = 1024;
@@ -265,8 +344,8 @@ void GameArkanoid::GenerateOutput()
 	// 
 	SDL_Rect paddle{
 		static_cast<int>(player_1.mPaddlePos.x),//static_cast converte de float para inteiros, pois SDL_Rect trabalha com inteiros
-		static_cast<int>(player_1.mPaddlePos.y - paddleH / 2),
-		static_cast<int>(paddleH),
+		static_cast<int>(player_1.mPaddlePos.y - paddleW / 2),
+		static_cast<int>(paddleW),
 		thickness
 	};
 	SDL_RenderFillRect(mRenderer, &paddle);
@@ -274,7 +353,7 @@ void GameArkanoid::GenerateOutput()
 
 	for (int i = 0; i < 10; i++) {
 
-		if (ball_array[i].active) {
+		if (ball_array[i].active || ball_array[i].draw_only) {
 
 
 			//mudar a cor do renderizador para a Ball0
