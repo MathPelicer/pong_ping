@@ -1,3 +1,10 @@
+/*
+	Guilherme Chagas / 22119013-5
+	Luca Milla / 22119002-8
+	Matheus Pelicer / 22119024-2
+	Thiago Soares / 22119044-0
+*/
+
 // ----------------------------------------------------------------
 // From Game Programming in C++ by Sanjay Madhav
 // Copyright (C) 2017 Sanjay Madhav. All rights reserved.

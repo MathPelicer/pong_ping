@@ -334,7 +334,6 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 
 				}
 				else {
-					printf("Health: %d\n", health);
 					if (health == 5) {
 						health = 4;
 					}
@@ -347,6 +346,7 @@ void GamePong::RunPongSingleplayer(float deltaTime)
 					else if (health == 2) {
 						health = 1;
 					}
+					printf("Health: %d\n", health);
 					ball_array[i].mBallPos.x = rand() % 256 + 768;
 					ball_array[i].mBallPos.y = rand() % 768;
 					ball_array[i].mBallSpeed.x *= 0.75;

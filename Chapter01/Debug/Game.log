@@ -1,5 +1,11 @@
 ﻿  GameArkanoid.cpp
-F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(59,12): warning C4244: 'argumento': conversão de 'time_t' para 'unsigned int', possível perda de dados
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(64,12): warning C4244: 'argumento': conversão de 'time_t' para 'unsigned int', possível perda de dados
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(455,40): warning C4838: a conversão de 'float' em 'int' requer uma conversão de restrição
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(455,40): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(511,29): warning C4838: a conversão de 'float' em 'int' requer uma conversão de restrição
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(511,29): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(512,29): warning C4838: a conversão de 'float' em 'int' requer uma conversão de restrição
+F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\GameArkanoid.cpp(512,29): warning C4244: 'inicializando': conversão de 'float' para 'int', possível perda de dados
   Game.vcxproj -> F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\Debug\Game.exe
   F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\\..\external\SDL\lib\win\x86\libfreetype-6.dll
   F:\Arquivos\FEI\Dev de Jogos\Ping-pong\Chapter01\\..\external\SDL\lib\win\x86\libogg-0.dll

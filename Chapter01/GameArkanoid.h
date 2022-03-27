@@ -10,6 +10,15 @@
 #include "SDL/SDL.h"
 #include "Game.h"
 
+struct BlockVector2
+{
+	Vector2 mBlockPos;
+
+	int health;
+
+	int value;
+};
+
 
 // Game class
 class GameArkanoid
@@ -61,4 +70,17 @@ private:
 
 	// Balls array
 	BallVector2 ball_array[10] = { Ball0, Ball1, Ball2, Ball3, Ball4, Ball5, Ball6, Ball7, Ball8, Ball9 };
+
+	// Block
+
+	BlockVector2 Block0;
+	BlockVector2 Block1;
+	BlockVector2 Block2;
+	BlockVector2 Block3;
+	BlockVector2 Block4;
+
+	// Blocks array
+
+	BlockVector2 block_array[5] = { Block0, Block1, Block2, Block3, Block4 };
+
 };
